@@ -17,8 +17,26 @@
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
-            android:text="查询模型列表"
+            android:text="可比克"
             android:id="@+id/search_btn"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="徐福记"
+            android:id="@+id/search2" />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="海天"
+            android:id="@+id/search3" />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="美的"
+            android:id="@+id/search4" />
 
         <ImageView
             android:layout_width="50dp"

@@ -3,23 +3,28 @@ package com.gizmo.gsdksmaple;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.gizmo.gsdk.GSDK;
 import com.gizmo.gsdk.activity.GActivity;
-import com.gizmo.gsdk.opencv.OpenCVTest;
-import com.gizmo.gsdk.parameter.DisplayParameters;
+import com.gizmo.gsdk.logo.LogoRecog;
 import com.gizmo.gsdk.parameter.TestParameter;
+
+import java.io.File;
 
 /**
  * Created by kl on 18-3-18.
  */
 
 public class SampleActivity extends AppCompatActivity {
+    LogoRecog logoRecog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,25 @@ public class SampleActivity extends AppCompatActivity {
                 search();
             }
         });
+        logoRecog = new LogoRecog(this);
+        findViewById(R.id.search2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recog("2.jpg");
+            }
+        });
+        findViewById(R.id.search3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recog("3.jpg");
+            }
+        });
+        findViewById(R.id.search4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recog("4.jpg");
+            }
+        });
     }
 
     private void display(){
@@ -49,17 +73,35 @@ public class SampleActivity extends AppCompatActivity {
     }
 
     private void search(){
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);
+//
+//        int w = bitmap.getWidth();
+//        int h = bitmap.getHeight();
+//        int[] pix = new int[w * h];
+//        bitmap.getPixels(pix, 0, w, 0, 0, w, h);
 
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
-        int[] pix = new int[w * h];
-        bitmap.getPixels(pix, 0, w, 0, 0, w, h);
-        int[] resultPixels = OpenCVTest.gray(pix, w, h);
-        Bitmap result = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
-        result.setPixels(resultPixels,0,w,0,0,w,h);
+//        Intent intent = new Intent(this,CameraActivity.class);
+//        this.startActivity(intent);
+        recog("1.jpg");
+    }
 
-        ImageView imageView = (ImageView) findViewById(R.id.image);
-        imageView.setImageBitmap(result);
+    private void recog(String name){
+        final long now = SystemClock.uptimeMillis();
+        new AsyncTask<String, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(String... strings) {
+                if(strings.length == 0){
+                    return -1001;
+                }
+                int result=logoRecog.recognize(strings[0]);
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                super.onPostExecute(integer);
+                Toast.makeText(SampleActivity.this,"result:"+integer+" time:"+String.valueOf(SystemClock.uptimeMillis()-now),Toast.LENGTH_SHORT).show();
+            }
+        }.execute(this.getFilesDir()+ File.separator+name);
     }
 }

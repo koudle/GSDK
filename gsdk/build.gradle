@@ -14,6 +14,7 @@ android {
 
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+            cFlags "-std=c++11"
         }
 
     }
@@ -31,7 +32,7 @@ android {
 //重定向so目录为src/main/libs和src/main/jniLibs，原来为src/main/jniLibs
 
     task ndkBuild(type: Exec, description: 'Compile JNI source with NDK') {
-        Properties properties = new Properties()
+            Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def ndkDir = properties.getProperty('ndk.dir')
 

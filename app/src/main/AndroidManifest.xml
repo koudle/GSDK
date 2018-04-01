@@ -19,6 +19,8 @@
         <activity android:name="com.gizmo.gsdk.activity.GActivity"
             android:theme="@style/AppMainTheme"
             android:hardwareAccelerated="true"></activity>
+        <activity android:name=".CameraActivity"/>
     </application>
 
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
 </manifest>

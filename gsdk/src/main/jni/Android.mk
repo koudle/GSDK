@@ -1,24 +1,11 @@
 LOCAL_PATH := $(call my-dir)
-
 include $(CLEAR_VARS)
-
-
-OpenCV_INSTALL_MODULES := on
-OpenCV_CAMERA_MODULES := off
-
-OPENCV_LIB_TYPE :=STATIC
-
-ifeq ("$(wildcard $(OPENCV_MK_PATH))","")
+OPENCV_CAMERA_MODULES:=on
+OPENCV_INSTALL_MODULES:=on
 include ../../../../native/jni/OpenCV.mk
-else
-include $(OPENCV_MK_PATH)
-endif
-
 LOCAL_MODULE := OpenCV
-
-LOCAL_SRC_FILES :=com_gizmo_gsdk_opencv_OpenCVTest.cpp
-
-LOCAL_LDLIBS +=  -lm -llog -latomic
-
-
+LOCAL_SRC_FILES := com_gizmo_gsdk_logo_LibLogoRecog.cpp \
+logoRecog.cpp
+LOCAL_LDLIBS += -llog -ldl -lm -latomic
+LOCAL_CFLAGS += -std=c++11
 include $(BUILD_SHARED_LIBRARY)
