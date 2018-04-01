@@ -6,7 +6,6 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -14,7 +13,6 @@ import com.gizmo.gsdk.BuildConfig;
 import com.gizmo.gsdk.R;
 import com.gizmo.gsdk.config.AppConfig;
 import com.gizmo.gsdk.parameter.BaseParameter;
-import com.gizmo.gsdk.parameter.DisplayParameters;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;

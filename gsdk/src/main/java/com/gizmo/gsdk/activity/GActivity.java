@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.gizmo.gsdk.R;
-import com.gizmo.gsdk.parameter.BaseParameter;
-import com.gizmo.gsdk.parameter.DisplayParameters;
 import com.gizmo.gsdk.parameter.TestParameter;
 import com.gizmo.gsdk.view.GView;
 
