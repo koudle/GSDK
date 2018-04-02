@@ -11,37 +11,30 @@
         <Button
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="模型浏览"
+            android:text="3D模型浏览"
             android:id="@+id/display_btn"/>
         <Button
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:text="可比克"
-            android:id="@+id/search_btn"/>
+            android:text="AR模型浏览"
+            android:id="@+id/ar_btn"/>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="AR扫一扫"
+            android:id="@+id/ar_scan_btn"/>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="AR扫一扫 进入3D模型浏览"
+            android:id="@+id/ar_3d_btn"/>
 
         <Button
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="徐福记"
-            android:id="@+id/search2" />
+            android:text="AR扫一扫 进入AR模型浏览"
+            android:id="@+id/ar_ar_btn"/>
 
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:text="海天"
-            android:id="@+id/search3" />
-
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:text="美的"
-            android:id="@+id/search4" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/image"/>
     </LinearLayout>
 
 </RelativeLayout>

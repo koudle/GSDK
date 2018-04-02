@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.gizmo.gsdk.view.GView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:id="@+id/gview">
+    android:layout_width="match_parent">
+    <com.gizmo.gsdk.view.GView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gview">
 
-</com.gizmo.gsdk.view.GView>
+    </com.gizmo.gsdk.view.GView>
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:text="toggleAR"
+        android:id="@+id/toggle_ar_btn"
+        />
+</RelativeLayout>

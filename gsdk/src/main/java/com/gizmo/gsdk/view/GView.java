@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.gizmo.gsdk.parameter.BaseParameter;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 /**
  * Created by kl on 18-3-18.
@@ -25,6 +27,8 @@ public class GView extends LinearLayout {
 
     private WebView webView;
     private ProgressBar progressBar;
+    private volatile boolean isFinish = false;
+    private volatile boolean isToggleAr = false;
 
     public GView(Context context) {
         this(context,null);
@@ -103,6 +107,19 @@ public class GView extends LinearLayout {
         webView.loadUrl(url);
     }
 
+    public void load3D(String url){
+        if(TextUtils.isEmpty(url)) return;
+        webView.loadUrl(url);
+    }
+
+    public void toggleAr(){
+        if(isFinish) {
+            webView.loadUrl("javascript:toggleAr()");
+        }else {
+            isToggleAr = true;
+        }
+    }
+
     public boolean goBack(){
         if(webView == null) return false;
         if(webView.canGoBack()){
@@ -136,6 +153,38 @@ public class GView extends LinearLayout {
                 progressBar.setProgress(newProgress);
             }
             super.onProgressChanged(view, newProgress);
+        }
+    }
+
+    class GViewClient extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView webView, String s) {
+            //        String url = request.getUrl().toString();
+////        if(TextUtils.isEmpty(url) || !url.contains(AppConfig.HOST)){
+////            loadErrorPage(view,"不能加载"+AppConfig.HOST+"以外的页面");
+////            return true;
+////        }
+            webView.loadUrl(s);
+            return true;
+        }
+
+
+        private void loadErrorPage(WebView view,String tips){
+            String errorHtml = "<html><body style='background-color:#e5e5e5;'><h1>%s</h1></body></html>";
+            errorHtml = String.format(errorHtml,tips);
+            view.loadData(errorHtml, "text/html", "UTF-8");
+        }
+
+        @Override
+        public void onPageFinished(WebView webView, String s) {
+            super.onPageFinished(webView, s);
+            isFinish = true;
+            if(isToggleAr) {
+                webView.loadUrl("javascript:toggleAr()");
+                isToggleAr = false;
+            }
+
         }
     }
 }

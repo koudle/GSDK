@@ -1,123 +1,218 @@
 package com.gizmo.gsdksmaple;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.gizmo.gsdk.logo.LogoResult;
+import com.gizmo.gsdk.logo.LogoResultListener;
+import com.gizmo.gsdk.parameter.ARParameters;
+import com.gizmo.gsdk.parameter.ModelParameters;
+import com.gizmo.gsdk.utils.ImageUtils;
+import com.gizmo.gsdksmaple.camera.CameraSurfaceView;
+import com.gizmo.gsdksmaple.camera.CameraUtils;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
-public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback{
-    private SurfaceView cameraView;
-    private SurfaceHolder surfaceHolder;
-    private Camera camera;
+public class CameraActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public static final String TYPE = "type";
+
+
+    private static final int REQUEST_CAMERA = 0x01;
+
+    private CameraSurfaceView mCameraSurfaceView;
+    private Button mBtnTake;
+    private Button mBtnSwitch;
+
+    private int mOrientation;
+
+    // CameraSurfaceView 容器包装类
+    private FrameLayout mAspectLayout;
+    private boolean mCameraRequested;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.camera);
+        // Android 6.0相机动态权限检查
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            initView();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    }, REQUEST_CAMERA);
+        }
+    }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkCallingOrSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, 1001);
+    /**
+     * 初始化View
+     */
+    private void initView() {
+        mAspectLayout = (FrameLayout) findViewById(R.id.layout_aspect);;
+        mCameraSurfaceView = new CameraSurfaceView(this);
+        mAspectLayout.addView(mCameraSurfaceView);
+        mOrientation = CameraUtils.calculateCameraPreviewOrientation(CameraActivity.this);
+        mBtnTake = (Button) findViewById(R.id.btn_take);
+        mBtnTake.setOnClickListener(this);
+        mBtnSwitch = (Button) findViewById(R.id.btn_switch);
+        mBtnSwitch.setOnClickListener(this);
+
+        int type = getIntent().getIntExtra(TYPE,0);
+
+        if(type == 0) {
+            mCameraSurfaceView.setgLogoRecogListener(new LogoResultListener() {
+                @Override
+                public void onRecoging() {
+                }
+
+                @Override
+                public void onRecogSuceess(LogoResult logoResult) {
+                    Toast.makeText(CameraActivity.this, "name:" + logoResult.name + "\nid:" + logoResult.id, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else if(type == 1) {
+            mCameraSurfaceView.setgLogoRecogListener(new LogoResultListener() {
+                @Override
+                public void onRecoging() {
+
+                }
+
+                @Override
+                public void onRecogSuceess(LogoResult logoResult) {
+                    Intent intent = new Intent(CameraActivity.this, GActivity.class);
+                    ModelParameters testParameter = new ModelParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0","1","1");
+                    intent.putExtra(GActivity.PARAMETER,testParameter.toURL());
+                    CameraActivity.this.startActivity(intent);
+                }
+            });
+        }else if(type == 2) {
+            mCameraSurfaceView.setgLogoRecogListener(new LogoResultListener() {
+                @Override
+                public void onRecoging() {
+
+                }
+
+                @Override
+                public void onRecogSuceess(LogoResult logoResult) {
+                    Intent intent = new Intent(CameraActivity.this, GActivity.class);
+                    ARParameters testParameter = new ARParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0","1","1");
+                    intent.putExtra(GActivity.PARAMETER,testParameter.toURL());
+                    CameraActivity.this.startActivity(intent);
+                }
+            });
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 1001){
-            if(grantResults.length > 0) {
-                if(grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    initCamera();
+        switch (requestCode) {
+            // 相机权限
+            case REQUEST_CAMERA:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mCameraRequested = true;
+                    initView();
                 }
-            }
-        }
-    }
-
-    private void initCamera(){
-        cameraView = (SurfaceView) findViewById(R.id.camera_view);
-        surfaceHolder = cameraView.getHolder();
-        surfaceHolder.addCallback(this);
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        camera = Camera.open();
-        try {
-            camera.setPreviewDisplay(surfaceHolder);
-        } catch (IOException e) {
-            if(null != camera) {
-                camera.release();
-                camera = null;
-            }
-            e.printStackTrace();
+                break;
         }
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        if(camera != null) {
-            openCamera();
+    protected void onResume() {
+        super.onResume();
+        if (mCameraRequested) {
+            CameraUtils.startPreview();
         }
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        if(null != camera) {
-            camera.setPreviewCallback(null);
-            camera.stopPreview();
-            camera.release();
-            camera = null;
+    protected void onPause() {
+        super.onPause();
+        CameraUtils.stopPreview();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_take:
+                takePicture();
+                break;
+
+            case R.id.btn_switch:
+                switchCamera();
+                break;
         }
     }
 
-    private void openCamera() {
-        Camera.Parameters parameters = camera.getParameters();//获取camera的parameter实例
-        List<Camera.Size> sizeList = parameters.getSupportedPreviewSizes();//获取所有支持的camera尺寸
-        Camera.Size optionSize = getOptimalPreviewSize(sizeList, cameraView.getWidth(), cameraView.getHeight());//获取一个最为适配的屏幕尺寸
-        parameters.setPreviewSize(optionSize.width, optionSize.height);//把只存设置给parameters
-        camera.setParameters(parameters);//把parameters设置给camera上
-        camera.startPreview();//开始预览
-        camera.setDisplayOrientation(90);//将预览旋转90度
-    }
+    /**
+     * 拍照
+     */
+    private void takePicture() {
+        CameraUtils.takePicture(new Camera.ShutterCallback() {
+            @Override
+            public void onShutter() {
 
-    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
-        final double ASPECT_TOLERANCE = 0.1;
-        double targetRatio = (double) w / h;
-        if (sizes == null) return null;
-
-        Camera.Size optimalSize = null;
-        double minDiff = Double.MAX_VALUE;
-
-        int targetHeight = h;
-
-        // Try to find an size match aspect ratio and size
-        for (Camera.Size size : sizes) {
-            double ratio = (double) size.width / size.height;
-            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
-            if (Math.abs(size.height - targetHeight) < minDiff) {
-                optimalSize = size;
-                minDiff = Math.abs(size.height - targetHeight);
             }
-        }
-
-        // Cannot find the one match the aspect ratio, ignore the requirement
-        if (optimalSize == null) {
-            minDiff = Double.MAX_VALUE;
-            for (Camera.Size size : sizes) {
-                if (Math.abs(size.height - targetHeight) < minDiff) {
-                    optimalSize = size;
-                    minDiff = Math.abs(size.height - targetHeight);
+        }, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                CameraUtils.startPreview();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                if (bitmap != null) {
+                    bitmap = ImageUtils.getRotatedBitmap(bitmap, mOrientation);
+                    String path = Environment.getExternalStorageDirectory() + "/DCIM/Camera/"
+                            + System.currentTimeMillis() + ".jpg";
+                    try {
+                        FileOutputStream fout = new FileOutputStream(path);
+                        BufferedOutputStream bos = new BufferedOutputStream(fout);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                        bos.flush();
+                        bos.close();
+                        fout.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                CameraUtils.startPreview();
             }
-        }
-        return optimalSize;
+        });
     }
+
+
+    /**
+     * 切换相机
+     */
+    private void switchCamera() {
+        if (mCameraSurfaceView != null) {
+            CameraUtils.switchCamera(1 - CameraUtils.getCameraID(), mCameraSurfaceView.getHolder(),mCameraSurfaceView);
+            // 切换相机后需要重新计算旋转角度
+            mOrientation = CameraUtils.calculateCameraPreviewOrientation(CameraActivity.this);
+        }
+    }
+
 }

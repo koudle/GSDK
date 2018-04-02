@@ -17,7 +17,19 @@ public class SignatureUtil {
                     .getInstance("SHA-1");
             String content = email+token+timeStamp;
             digest.update(content.getBytes());
-            return  Base64.encodeToString(digest.digest(),Base64.DEFAULT);
+            //获取字节数组
+            byte messageDigest[] = digest.digest();
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            // 字节数组转换为 十六进制 数
+            for (int i = 0; i < messageDigest.length; i++) {
+                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
+                if (shaHex.length() < 2) {
+                    hexString.append(0);
+                }
+                hexString.append(shaHex);
+            }
+            return  Base64.encodeToString(hexString.toString().getBytes(),Base64.DEFAULT).replace("\n","");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
