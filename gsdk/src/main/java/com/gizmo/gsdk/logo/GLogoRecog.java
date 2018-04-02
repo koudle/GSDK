@@ -57,6 +57,8 @@ public class GLogoRecog {
     private Handler handler;
     private LogoResultListener logoResultListener;
     private long previewTime = 0;
+    private OkHttpClient client ;
+
 
     private class InternalHandler extends Handler {
         private Context context;
@@ -88,6 +90,7 @@ public class GLogoRecog {
 
     public GLogoRecog(Context context){
         this.context = context;
+        client = new OkHttpClient();
         executorService = Executors.newFixedThreadPool(DeviceUtils.getNumberOfCPUCores()*2);
         handler = new InternalHandler(context);
     }
@@ -144,7 +147,6 @@ public class GLogoRecog {
         String AccessKeyId = null;
         final JSONObject callback;
 
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(String.format("http://logorec.gizmocloud.cn/%s/upload_policy?md5=%s.jpg", FileUtils.getImei(context),imageName))
                 .build();
@@ -217,7 +219,6 @@ public class GLogoRecog {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(String.format("http://logorec.gizmocloud.cn/result/%s", FileUtils.getImei(context)))
                 .build();
