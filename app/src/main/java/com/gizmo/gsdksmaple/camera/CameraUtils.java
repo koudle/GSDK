@@ -35,29 +35,11 @@ public class CameraUtils {
         for (int i = 0; i < numCameras; i++) {
             Camera.getCameraInfo(i, info);
             if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                mCamera = Camera.open(i);
                 mCameraID = info.facing;
                 break;
             }
         }
-        // 如果没有前置摄像头，则打开默认的后置摄像头
-        if (mCamera == null) {
-            mCamera = Camera.open();
-            mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-        }
-        // 没有摄像头时，抛出异常
-        if (mCamera == null) {
-            throw new RuntimeException("Unable to open camera");
-        }
-
-        Camera.Parameters parameters = mCamera.getParameters();
-        mCameraPreviewFps = CameraUtils.chooseFixedPreviewFps(parameters, expectFps * 1000);
-        parameters.setRecordingHint(true);
-        mCamera.setParameters(parameters);
-        setPreviewSize(mCamera, CameraUtils.DEFAULT_WIDTH, CameraUtils.DEFAULT_HEIGHT);
-        setPictureSize(mCamera, CameraUtils.DEFAULT_WIDTH, CameraUtils.DEFAULT_HEIGHT);
-        mCamera.setDisplayOrientation(mOrientation);
-        setPreviewCallback(previewCallback);
+        openCamera(mCameraID,expectFps,previewCallback);
     }
 
     public static void setPreviewCallback(Camera.PreviewCallback previewCallback){
@@ -79,8 +61,10 @@ public class CameraUtils {
         if (mCamera == null) {
             throw new RuntimeException("Unable to open camera");
         }
+
         mCameraID = cameraID;
         Camera.Parameters parameters = mCamera.getParameters();
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCameraPreviewFps = CameraUtils.chooseFixedPreviewFps(parameters, expectFps * 1000);
         parameters.setRecordingHint(true);
         mCamera.setParameters(parameters);
@@ -88,6 +72,7 @@ public class CameraUtils {
         setPictureSize(mCamera, CameraUtils.DEFAULT_WIDTH, CameraUtils.DEFAULT_HEIGHT);
         mCamera.setDisplayOrientation(mOrientation);
         setPreviewCallback(previewCallback);
+
     }
 
     /**
@@ -101,8 +86,20 @@ public class CameraUtils {
         try {
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
+
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void autoFocus(){
+        if(mCamera != null) {
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                    //camera.cancelAutoFocus();
+                }
+            });
         }
     }
 

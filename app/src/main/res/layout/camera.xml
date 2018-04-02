@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         android:gravity="center">
         <Button
             android:id="@+id/btn_take"
@@ -29,5 +30,9 @@
             android:layout_height="wrap_content"
             android:text="切换相机" />
     </LinearLayout>
+
+    <com.gizmo.gsdksmaple.camera.ScanView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

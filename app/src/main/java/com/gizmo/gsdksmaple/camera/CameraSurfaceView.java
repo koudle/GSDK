@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.gizmo.gsdk.logo.GLogoRecog;
@@ -53,6 +54,12 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
 //                Toast.makeText(getContext(), "cose:"+logoResult.cost+"\nname:" + logoResult.name + "\nid:" + logoResult.id, Toast.LENGTH_SHORT).show();
 //            }
 //        });
+        this.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CameraUtils.autoFocus();
+            }
+        });
     }
 
     public void setgLogoRecogListener(LogoResultListener logoRecogListener){
