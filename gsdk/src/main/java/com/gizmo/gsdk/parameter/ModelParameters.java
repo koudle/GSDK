@@ -1,7 +1,5 @@
 package com.gizmo.gsdk.parameter;
 
-import android.os.Parcel;
-
 import com.gizmo.gsdk.GSDK;
 import com.gizmo.gsdk.utils.Predication;
 import com.gizmo.gsdk.utils.SignatureUtil;
@@ -21,12 +19,11 @@ public class ModelParameters extends BaseParameter {
     private String autostart;
     private String autoload;
 
-
-    public ModelParameters(String content_id, String autostart,String autoload){
+    public ModelParameters(String content_id, boolean autostart, boolean autoload){
         this.content_id = content_id;
         this.timestamp = String.valueOf(System.currentTimeMillis()/1000);
-        this.autostart = autostart;
-        this.autoload = autoload;
+        this.autostart = autostart ? "1" : "0";
+        this.autoload = autoload ? "1" : "0";
     }
 
     @Override

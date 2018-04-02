@@ -70,14 +70,14 @@ public class SampleActivity extends AppCompatActivity {
 
     private void display(){
         Intent intent = new Intent(SampleActivity.this, GActivity.class);
-        ModelParameters testParameter = new ModelParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0","1","1");
+        ModelParameters testParameter = new ModelParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0",false,true);
         intent.putExtra(GActivity.PARAMETER,testParameter.toURL());
         SampleActivity.this.startActivity(intent);
     }
 
     private void ar(){
         Intent intent = new Intent(SampleActivity.this, GActivity.class);
-        ARParameters testParameter = new ARParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0","1","1");
+        ARParameters testParameter = new ARParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0",true,true);
         intent.putExtra(GActivity.PARAMETER,testParameter.toURL());
         SampleActivity.this.startActivity(intent);
     }
