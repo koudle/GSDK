@@ -47,6 +47,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     // CameraSurfaceView 容器包装类
     private FrameLayout mAspectLayout;
     private boolean mCameraRequested;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +88,19 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
             mCameraSurfaceView.setgLogoRecogListener(new LogoResultListener() {
                 @Override
                 public void onRecoging() {
+                    if(toast != null) {
+                        toast.cancel();
+                    }
                 }
 
                 @Override
                 public void onRecogSuceess(LogoResult logoResult) {
-                    Toast.makeText(CameraActivity.this, "name:" + logoResult.name + "\nid:" + logoResult.id, Toast.LENGTH_SHORT).show();
+                    if(toast == null) {
+                        toast = Toast.makeText(CameraActivity.this, "name:" + logoResult.name + "\nid:" + logoResult.id, Toast.LENGTH_SHORT);
+                    }else {
+                        toast.setText("name:" + logoResult.name + "\nid:" + logoResult.id);
+                    }
+                    toast.show();
                 }
             });
         }else if(type == 1) {
