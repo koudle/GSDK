@@ -48,6 +48,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private FrameLayout mAspectLayout;
     private boolean mCameraRequested;
     private Toast toast;
+    private boolean isOpenActivity = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +113,13 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
                 @Override
                 public void onRecogSuceess(LogoResult logoResult) {
-                    Intent intent = new Intent(CameraActivity.this, GActivity.class);
-                    ModelParameters testParameter = new ModelParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0",false,true);
-                    intent.putExtra(GActivity.PARAMETER,testParameter.toURL());
-                    CameraActivity.this.startActivity(intent);
+                    if(!isOpenActivity) {
+                        isOpenActivity = true;
+                        Intent intent = new Intent(CameraActivity.this, GActivity.class);
+                        ModelParameters testParameter = new ModelParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0", false, true);
+                        intent.putExtra(GActivity.PARAMETER, testParameter.toURL());
+                        CameraActivity.this.startActivity(intent);
+                    }
                 }
             });
         }else if(type == 2) {
@@ -127,10 +131,13 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
                 @Override
                 public void onRecogSuceess(LogoResult logoResult) {
-                    Intent intent = new Intent(CameraActivity.this, GActivity.class);
-                    ARParameters testParameter = new ARParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0",true,true);
-                    intent.putExtra(GActivity.PARAMETER,testParameter.toURL());
-                    CameraActivity.this.startActivity(intent);
+                    if(!isOpenActivity) {
+                        isOpenActivity = true;
+                        Intent intent = new Intent(CameraActivity.this, GActivity.class);
+                        ARParameters testParameter = new ARParameters("b7fdfb6e28200aff3c4025b1fef8c1e475e2b5e0", true, true);
+                        intent.putExtra(GActivity.PARAMETER, testParameter.toURL());
+                        CameraActivity.this.startActivity(intent);
+                    }
                 }
             });
         }
