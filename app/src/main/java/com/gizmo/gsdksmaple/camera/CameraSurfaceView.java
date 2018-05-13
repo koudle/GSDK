@@ -11,9 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.gizmo.gsdk.logo.GLogoRecog;
-import com.gizmo.gsdk.logo.LogoResult;
 import com.gizmo.gsdk.logo.LogoResultListener;
-import com.gizmo.gsdk.utils.ImageUtils;
 
 public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback,Camera.PreviewCallback {
 

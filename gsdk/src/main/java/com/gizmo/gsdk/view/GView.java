@@ -1,5 +1,6 @@
 package com.gizmo.gsdk.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,6 +13,8 @@ import android.widget.ProgressBar;
 
 import com.gizmo.gsdk.BuildConfig;
 import com.gizmo.gsdk.R;
+import com.gizmo.gsdk.cacheWebView.CacheWebView;
+import com.gizmo.gsdk.cacheWebView.WebViewCache;
 import com.gizmo.gsdk.config.AppConfig;
 import com.gizmo.gsdk.parameter.BaseParameter;
 import com.tencent.smtt.sdk.WebChromeClient;
@@ -19,13 +22,15 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
+import java.io.File;
+
 /**
  * Created by kl on 18-3-18.
  */
 
 public class GView extends LinearLayout {
 
-    private WebView webView;
+    private CacheWebView webView;
     private ProgressBar progressBar;
     private volatile boolean isFinish = false;
     private volatile boolean isToggleAr = false;
@@ -42,6 +47,7 @@ public class GView extends LinearLayout {
         this(context, attrs, defStyleAttr,0);
     }
 
+    @TargetApi(21)
     public GView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initGView();
@@ -51,7 +57,10 @@ public class GView extends LinearLayout {
         this.setOrientation(VERTICAL);
         this.setBackgroundColor(Color.TRANSPARENT);
         View.inflate(getContext(), R.layout.gview, this);
-        webView = (WebView) findViewById(R.id.web_view);
+        webView = (CacheWebView) findViewById(R.id.web_view);
+        webView.setCacheStrategy(WebViewCache.CacheStrategy.FORCE);
+        CacheWebView.getCacheConfig().init(getContext(),getContext().getExternalCacheDir()+File.separator+"web",1024*1024*100,1024*1024*10)
+                .enableDebug(true);//100M 磁盘缓存空间,10M 内存缓存空间
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         initWebSettings();
     }
@@ -165,7 +174,9 @@ public class GView extends LinearLayout {
 ////            loadErrorPage(view,"不能加载"+AppConfig.HOST+"以外的页面");
 ////            return true;
 ////        }
-            webView.loadUrl(s);
+            if(s.startsWith("http")) {
+                webView.loadUrl(s);
+            }
             return true;
         }
 
