@@ -7,6 +7,7 @@ import android.os.Message;
 import android.view.KeyEvent;
 
 
+import com.gizmo.gsdk.cacheWebView.jsbridge.BridgeUtil;
 import com.tencent.smtt.export.external.interfaces.ClientCertRequest;
 import com.tencent.smtt.export.external.interfaces.HttpAuthHandler;
 import com.tencent.smtt.export.external.interfaces.SslError;
@@ -18,7 +19,9 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -139,16 +142,32 @@ final class CacheWebViewClient extends WebViewClient {
         return ou;
     }
     @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 
-        if (mCustomWebViewClient!=null){
-            boolean ret =  mCustomWebViewClient.shouldOverrideUrlLoading(view,url);
-            if (ret){
-                return true;
-            }
+        try {
+            url = URLDecoder.decode(url, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-        view.loadUrl(url);
-        return true;
+
+        CacheWebView cacheWebView = (CacheWebView) webView;
+
+        if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) { // 如果是返回数据
+            cacheWebView.handlerReturnData(url);
+            return true;
+        } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) { //
+            cacheWebView.flushMessageQueue();
+            return true;
+        } else {
+            if (mCustomWebViewClient!=null){
+                boolean ret =  mCustomWebViewClient.shouldOverrideUrlLoading(webView,url);
+                if (ret){
+                    return true;
+                }
+            }
+            webView.loadUrl(url);
+            return true;
+        }
     }
 
     @Override
@@ -165,16 +184,29 @@ final class CacheWebViewClient extends WebViewClient {
     }
 
     @Override
-    public void onPageFinished(WebView view, String url) {
+    public void onPageFinished(WebView webView, String url) {
         if (mIsBlockImageLoad){
-            WebSettings webSettings = view.getSettings();
+            WebSettings webSettings = webView.getSettings();
             webSettings.setBlockNetworkImage(false);
         }
         if (mCustomWebViewClient!=null){
-            mCustomWebViewClient.onPageFinished(view,url);
+            mCustomWebViewClient.onPageFinished(webView,url);
             return;
         }
-        super.onPageFinished(view, url);
+        if (CacheWebView.toLoadJs != null) {
+            BridgeUtil.webViewLoadLocalJs(webView, CacheWebView.toLoadJs);
+        }
+
+        CacheWebView cacheWebView = (CacheWebView) webView;
+        //
+        if (cacheWebView.getStartupMessage() != null) {
+            for (com.gizmo.gsdk.cacheWebView.jsbridge.Message m : cacheWebView.getStartupMessage()) {
+                cacheWebView.dispatchMessage(m);
+            }
+            cacheWebView.setStartupMessage(null);
+        }
+
+        super.onPageFinished(webView, url);
     }
 
     @Override
