@@ -1,4 +1,4 @@
-package com.gizmo.gsdk.parameter;
+package com.gizmo.gsdk.parameter.model;
 
 public class ARParameters extends ModelParameters {
 

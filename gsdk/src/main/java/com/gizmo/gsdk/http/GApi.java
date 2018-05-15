@@ -1,7 +1,6 @@
 package com.gizmo.gsdk.http;
 
 import com.gizmo.gsdk.parameter.BaseParameter;
-import com.gizmo.gsdk.parameter.QueryModleListParameter;
 
 import java.io.IOException;
 

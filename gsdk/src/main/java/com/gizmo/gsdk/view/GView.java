@@ -2,21 +2,28 @@ package com.gizmo.gsdk.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.alibaba.fastjson.JSON;
 import com.gizmo.gsdk.BuildConfig;
 import com.gizmo.gsdk.R;
 import com.gizmo.gsdk.cacheWebView.CacheWebView;
 import com.gizmo.gsdk.cacheWebView.WebViewCache;
+import com.gizmo.gsdk.cacheWebView.jsbridge.CallBackFunction;
 import com.gizmo.gsdk.config.AppConfig;
+import com.gizmo.gsdk.parameter.car.CarParameter;
+import com.gizmo.gsdk.parameter.car.CarStateInfo;
 import com.gizmo.gsdk.parameter.BaseParameter;
+import com.gizmo.gsdk.parameter.car.CarStateModel;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -30,10 +37,13 @@ import java.io.File;
 
 public class GView extends LinearLayout {
 
+    private static final String TAG = "GView";
+
     private CacheWebView webView;
     private ProgressBar progressBar;
     private volatile boolean isFinish = false;
     private volatile boolean isToggleAr = false;
+    private CarParameter carParameter;
 
     public GView(Context context) {
         this(context,null);
@@ -114,7 +124,100 @@ public class GView extends LinearLayout {
         if(parameters == null || webView == null) return;
         String url = parameters.toURL();
         webView.loadUrl(url);
+
     }
+
+
+
+    public void loadModel(final CarParameter carParameter, GCallback gCallback) {
+        if(carParameter == null) return;
+        this.carParameter = carParameter;
+        if(carParameter.forceUpdate) {
+
+        }
+
+        load3D(carParameter.toURL());
+
+
+    }
+
+    private void start(){
+        webView.callHandler("start", null, new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+                Log.d(TAG,"start callback:"+data);
+            }
+        });
+    }
+
+    public void getOptions(){
+        webView.callHandler("getOptions", null, new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+                Log.d(TAG,"getOptions callback:"+data);
+            }
+        });
+    }
+
+
+    public void modifyCarExterior(CarStateModel carStateModel){
+        if(carStateModel == null) return;
+        CarStateInfo carStateInfo = new CarStateInfo();
+        carStateInfo.carExterior = carStateModel;
+        modifyCarStates(carStateInfo);
+    }
+
+    public void modifyCarInterior(CarStateModel carStateModel){
+        if(carStateModel == null) return;
+        CarStateInfo carStateInfo = new CarStateInfo();
+        carStateInfo.carInterior = carStateModel;
+        modifyCarStates(carStateInfo);
+    }
+
+    public void modifyCarWheel(CarStateModel carStateModel){
+        if(carStateModel == null) return;
+        CarStateInfo carStateInfo = new CarStateInfo();
+        carStateInfo.carWhell = carStateModel;
+        modifyCarStates(carStateInfo);
+    }
+
+    public void modifyCarView(CarStateModel carStateModel){
+        if(carStateModel == null) return;
+        CarStateInfo carStateInfo = new CarStateInfo();
+        carStateInfo.carView = carStateModel;
+        modifyCarStates(carStateInfo);
+    }
+
+    public void modifyCarDoor(boolean[] carDoor){
+        CarStateInfo carStateInfo = new CarStateInfo();
+        carStateInfo.carDoors = carDoor;
+        modifyCarStates(carStateInfo);
+    }
+
+    public void modifyCarLight(boolean carLight) {
+        CarStateInfo carStateInfo = new CarStateInfo();
+        carStateInfo.carLight = carLight;
+        modifyCarStates(carStateInfo);
+    }
+
+
+    public void modifyCar3DButtons(boolean car3DButtons){
+        CarStateInfo carStateInfo = new CarStateInfo();
+        carStateInfo.car3DButtons = car3DButtons;
+        modifyCarStates(carStateInfo);
+    }
+
+    private void modifyCarStates(CarStateInfo carStateInfo){
+        webView.callHandler("modifyCarStates", JSON.toJSON(carStateInfo).toString(), new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+                Log.d(TAG,"modifyCarStates callback:"+data);
+            }
+        });
+    }
+
+
+
 
     public void load3D(String url){
         if(TextUtils.isEmpty(url)) return;
@@ -188,6 +291,12 @@ public class GView extends LinearLayout {
         }
 
         @Override
+        public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
+            super.onPageStarted(webView, s, bitmap);
+
+        }
+
+        @Override
         public void onPageFinished(WebView webView, String s) {
             super.onPageFinished(webView, s);
             isFinish = true;
@@ -195,6 +304,26 @@ public class GView extends LinearLayout {
                 webView.loadUrl("javascript:toggleAr()");
                 isToggleAr = false;
             }
+
+//            if(carParameter != null){
+//                if(carParameter.carStateInfo != null){
+//                    GView.this.webView.callHandler("setInitializeCallback", JSON.toJSON(carParameter.carStateInfo).toString(), new CallBackFunction() {
+//                        @Override
+//                        public void onCallBack(String data) {
+//                            Log.d(TAG,"setInitializeCallback callback:"+data);
+//                            start();
+//                            modifyCarStates(carParameter.carStateInfo);
+//                        }
+//                    });
+//                }
+//
+//                GView.this.webView.callHandler("setStartCallback", null, new CallBackFunction() {
+//                    @Override
+//                    public void onCallBack(String data) {
+//                        Log.d(TAG,"setStartCallback callback:"+data);
+//                    }
+//                });
+//            }
 
         }
     }

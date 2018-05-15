@@ -73,4 +73,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.aliyun.dpa:oss-android-sdk:2.8.0'
+    compile 'com.alibaba:fastjson:1.2.46'
+
 }

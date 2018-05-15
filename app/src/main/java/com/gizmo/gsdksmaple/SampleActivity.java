@@ -9,10 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.gizmo.gsdk.GSDK;
-import com.gizmo.gsdk.logo.GLogoRecog;
-import com.gizmo.gsdk.parameter.ARParameters;
-import com.gizmo.gsdk.parameter.ModelParameters;
-import com.gizmo.gsdk.parameter.TestParameter;
+import com.gizmo.gsdk.parameter.model.ARParameters;
+import com.gizmo.gsdk.parameter.model.TestParameter;
 
 /**
  * Created by kl on 18-3-18.

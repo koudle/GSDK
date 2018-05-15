@@ -1,6 +1,7 @@
-package com.gizmo.gsdk.parameter;
+package com.gizmo.gsdk.parameter.model;
 
 import com.gizmo.gsdk.GSDK;
+import com.gizmo.gsdk.parameter.BaseParameter;
 import com.gizmo.gsdk.utils.Predication;
 import com.gizmo.gsdk.utils.SignatureUtil;
 

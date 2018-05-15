@@ -1,7 +1,6 @@
-package com.gizmo.gsdk.parameter;
+package com.gizmo.gsdk.parameter.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.gizmo.gsdk.parameter.BaseParameter;
 
 /**
  * Created by kl on 18-3-18.

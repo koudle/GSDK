@@ -8,8 +8,10 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.gizmo.gsdk.R;
-import com.gizmo.gsdk.parameter.ModelParameters;
-import com.gizmo.gsdk.parameter.TestParameter;
+import com.gizmo.gsdk.parameter.car.CarParameter;
+import com.gizmo.gsdk.parameter.car.CarStateInfo;
+import com.gizmo.gsdk.parameter.car.CarStateModel;
+import com.gizmo.gsdk.view.GCallback;
 import com.gizmo.gsdk.view.GView;
 
 /**
@@ -41,7 +43,10 @@ public class GActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent == null || gView == null) return;
         //BaseParameter baseParameter = intent.get(PARAMETER);
-        gView.load3D( intent.getStringExtra(PARAMETER));
+        CarStateInfo stateInfo = new CarStateInfo();
+        stateInfo.carLight = true;
+        CarParameter carParameter = new CarParameter("",stateInfo,false);
+        gView.loadModel(carParameter, null);
     }
 
     @Override

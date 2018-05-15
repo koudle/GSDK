@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.gizmo.gsdk.logo.LogoResult;
 import com.gizmo.gsdk.logo.LogoResultListener;
-import com.gizmo.gsdk.parameter.ARParameters;
-import com.gizmo.gsdk.parameter.ModelParameters;
+import com.gizmo.gsdk.parameter.model.ARParameters;
+import com.gizmo.gsdk.parameter.model.ModelParameters;
 import com.gizmo.gsdk.utils.ImageUtils;
 import com.gizmo.gsdksmaple.camera.CameraSurfaceView;
 import com.gizmo.gsdksmaple.camera.CameraUtils;
