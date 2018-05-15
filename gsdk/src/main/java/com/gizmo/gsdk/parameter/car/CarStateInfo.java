@@ -9,7 +9,7 @@ public class CarStateInfo {
     public CarStateModel CarInterior;
     public CarStateModel CarWheel;
     public CarStateModel CarView;
-    public boolean[] CarDoors;
-    public boolean CarLight;
-    public boolean Car3DButtons;
+    public Boolean[] CarDoors;
+    public Boolean CarLight;
+    public Boolean Car3DButtons;
 }

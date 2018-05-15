@@ -68,7 +68,8 @@ public class GView extends LinearLayout {
         this.setBackgroundColor(Color.TRANSPARENT);
         View.inflate(getContext(), R.layout.gview, this);
         webView = (CacheWebView) findViewById(R.id.web_view);
-        webView.setCacheStrategy(WebViewCache.CacheStrategy.NO_CACHE);
+        webView.setCacheStrategy(WebViewCache.CacheStrategy.FORCE);
+
         CacheWebView.getCacheConfig().init(getContext(),getContext().getExternalCacheDir()+File.separator+"web",1024*1024*100,1024*1024*10)
                 .enableDebug(true);//100M 磁盘缓存空间,10M 内存缓存空间
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -188,7 +189,7 @@ public class GView extends LinearLayout {
         modifyCarStates(carStateInfo);
     }
 
-    public void modifyCarDoor(boolean[] carDoor){
+    public void modifyCarDoor(Boolean[] carDoor){
         CarStateInfo carStateInfo = new CarStateInfo();
         carStateInfo.CarDoors = carDoor;
         modifyCarStates(carStateInfo);
