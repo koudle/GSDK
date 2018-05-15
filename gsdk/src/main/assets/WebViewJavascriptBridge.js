@@ -44,6 +44,7 @@
     // 注册线程 往数组里面添加值
     function registerHandler(handlerName, handler) {
         messageHandlers[handlerName] = handler;
+        console.log("registerHandler:"+handlerName);
     }
     // 调用线程
     function callHandler(handlerName, data, responseCallback) {
@@ -107,6 +108,7 @@
                     handler(message.data, responseCallback);
                 } catch (exception) {
                     if (typeof console != 'undefined') {
+                        console.log(handler);
                         console.log("WebViewJavascriptBridge: WARNING: javascript handler threw.", message, exception);
                     }
                 }

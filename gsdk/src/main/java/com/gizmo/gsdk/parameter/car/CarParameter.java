@@ -4,7 +4,7 @@ import com.gizmo.gsdk.parameter.BaseParameter;
 
 public class CarParameter extends BaseParameter {
     //public static String BASE_URL = "https://gizmohub.com/models/";
-    public static String BASE_URL = "http://192.168.1.132:9999/";
+    public static String BASE_URL = "http://192.168.1.181:9999/";
 
     private String uid;
     public CarStateInfo carStateInfo;

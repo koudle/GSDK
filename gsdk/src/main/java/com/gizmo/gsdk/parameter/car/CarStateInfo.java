@@ -5,11 +5,11 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class CarStateInfo {
-    public CarStateModel carExterior;
-    public CarStateModel carInterior;
-    public CarStateModel carWhell;
-    public CarStateModel carView;
-    public boolean[] carDoors;
-    public boolean carLight;
-    public boolean car3DButtons;
+    public CarStateModel CarExterior;
+    public CarStateModel CarInterior;
+    public CarStateModel CarWheel;
+    public CarStateModel CarView;
+    public boolean[] CarDoors;
+    public boolean CarLight;
+    public boolean Car3DButtons;
 }

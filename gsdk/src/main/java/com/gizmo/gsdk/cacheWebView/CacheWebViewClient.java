@@ -156,7 +156,11 @@ final class CacheWebViewClient extends WebViewClient {
             cacheWebView.handlerReturnData(url);
             return true;
         } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) { //
-            cacheWebView.flushMessageQueue();
+            if(url.contains("__BRIDGE_LOADED__")){
+
+            }else {
+                cacheWebView.flushMessageQueue();
+            }
             return true;
         } else {
             if (mCustomWebViewClient!=null){
@@ -172,6 +176,7 @@ final class CacheWebViewClient extends WebViewClient {
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
         if (mIsBlockImageLoad){
             WebSettings webSettings = view.getSettings();
             webSettings.setBlockNetworkImage(true);
@@ -185,17 +190,15 @@ final class CacheWebViewClient extends WebViewClient {
 
     @Override
     public void onPageFinished(WebView webView, String url) {
+        if (CacheWebView.toLoadJs != null) {
+            BridgeUtil.webViewLoadLocalJs(webView, CacheWebView.toLoadJs);
+        }
+
         if (mIsBlockImageLoad){
             WebSettings webSettings = webView.getSettings();
             webSettings.setBlockNetworkImage(false);
         }
-        if (mCustomWebViewClient!=null){
-            mCustomWebViewClient.onPageFinished(webView,url);
-            return;
-        }
-        if (CacheWebView.toLoadJs != null) {
-            BridgeUtil.webViewLoadLocalJs(webView, CacheWebView.toLoadJs);
-        }
+
 
         CacheWebView cacheWebView = (CacheWebView) webView;
         //
@@ -204,6 +207,11 @@ final class CacheWebViewClient extends WebViewClient {
                 cacheWebView.dispatchMessage(m);
             }
             cacheWebView.setStartupMessage(null);
+        }
+
+        if (mCustomWebViewClient!=null){
+            mCustomWebViewClient.onPageFinished(webView,url);
+            return;
         }
 
         super.onPageFinished(webView, url);

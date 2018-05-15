@@ -343,6 +343,7 @@ public class CacheWebView extends WebView {
         if (url.startsWith("http")){
             mCacheWebViewClient.addVisitUrl(url);
         }
+
         super.loadUrl(url);
     }
     public void loadUrl(String url, Map<String, String> additionalHttpHeaders) {

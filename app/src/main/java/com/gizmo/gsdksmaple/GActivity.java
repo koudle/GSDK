@@ -10,8 +10,6 @@ import android.view.View;
 import com.gizmo.gsdk.R;
 import com.gizmo.gsdk.parameter.car.CarParameter;
 import com.gizmo.gsdk.parameter.car.CarStateInfo;
-import com.gizmo.gsdk.parameter.car.CarStateModel;
-import com.gizmo.gsdk.view.GCallback;
 import com.gizmo.gsdk.view.GView;
 
 /**
@@ -44,7 +42,7 @@ public class GActivity extends AppCompatActivity {
         if(intent == null || gView == null) return;
         //BaseParameter baseParameter = intent.get(PARAMETER);
         CarStateInfo stateInfo = new CarStateInfo();
-        stateInfo.carLight = true;
+        stateInfo.CarLight = true;
         CarParameter carParameter = new CarParameter("",stateInfo,false);
         gView.loadModel(carParameter, null);
     }

@@ -68,7 +68,7 @@ public class GView extends LinearLayout {
         this.setBackgroundColor(Color.TRANSPARENT);
         View.inflate(getContext(), R.layout.gview, this);
         webView = (CacheWebView) findViewById(R.id.web_view);
-        webView.setCacheStrategy(WebViewCache.CacheStrategy.FORCE);
+        webView.setCacheStrategy(WebViewCache.CacheStrategy.NO_CACHE);
         CacheWebView.getCacheConfig().init(getContext(),getContext().getExternalCacheDir()+File.separator+"web",1024*1024*100,1024*1024*10)
                 .enableDebug(true);//100M 磁盘缓存空间,10M 内存缓存空间
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -163,52 +163,52 @@ public class GView extends LinearLayout {
     public void modifyCarExterior(CarStateModel carStateModel){
         if(carStateModel == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.carExterior = carStateModel;
+        carStateInfo.CarExterior = carStateModel;
         modifyCarStates(carStateInfo);
     }
 
     public void modifyCarInterior(CarStateModel carStateModel){
         if(carStateModel == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.carInterior = carStateModel;
+        carStateInfo.CarInterior = carStateModel;
         modifyCarStates(carStateInfo);
     }
 
     public void modifyCarWheel(CarStateModel carStateModel){
         if(carStateModel == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.carWhell = carStateModel;
+        carStateInfo.CarWheel = carStateModel;
         modifyCarStates(carStateInfo);
     }
 
     public void modifyCarView(CarStateModel carStateModel){
         if(carStateModel == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.carView = carStateModel;
+        carStateInfo.CarView = carStateModel;
         modifyCarStates(carStateInfo);
     }
 
     public void modifyCarDoor(boolean[] carDoor){
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.carDoors = carDoor;
+        carStateInfo.CarDoors = carDoor;
         modifyCarStates(carStateInfo);
     }
 
     public void modifyCarLight(boolean carLight) {
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.carLight = carLight;
+        carStateInfo.CarLight = carLight;
         modifyCarStates(carStateInfo);
     }
 
 
     public void modifyCar3DButtons(boolean car3DButtons){
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.car3DButtons = car3DButtons;
+        carStateInfo.Car3DButtons = car3DButtons;
         modifyCarStates(carStateInfo);
     }
 
     private void modifyCarStates(CarStateInfo carStateInfo){
-        webView.callHandler("modifyCarStates", JSON.toJSON(carStateInfo).toString(), new CallBackFunction() {
+        webView.callHandler("setState", JSON.toJSON(carStateInfo).toString(), new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 Log.d(TAG,"modifyCarStates callback:"+data);
@@ -305,25 +305,25 @@ public class GView extends LinearLayout {
                 isToggleAr = false;
             }
 
-//            if(carParameter != null){
-//                if(carParameter.carStateInfo != null){
-//                    GView.this.webView.callHandler("setInitializeCallback", JSON.toJSON(carParameter.carStateInfo).toString(), new CallBackFunction() {
-//                        @Override
-//                        public void onCallBack(String data) {
-//                            Log.d(TAG,"setInitializeCallback callback:"+data);
-//                            start();
-//                            modifyCarStates(carParameter.carStateInfo);
-//                        }
-//                    });
-//                }
-//
-//                GView.this.webView.callHandler("setStartCallback", null, new CallBackFunction() {
-//                    @Override
-//                    public void onCallBack(String data) {
-//                        Log.d(TAG,"setStartCallback callback:"+data);
-//                    }
-//                });
-//            }
+            if(carParameter != null){
+                if(carParameter.carStateInfo != null){
+                    GView.this.webView.callHandler("setInitializeCallback", null, new CallBackFunction() {
+                        @Override
+                        public void onCallBack(String data) {
+                            Log.d(TAG,"setInitializeCallback callback:"+data);
+                            start();
+                            modifyCarStates(carParameter.carStateInfo);
+                        }
+                    });
+                }
+
+                GView.this.webView.callHandler("setStartCallback", null, new CallBackFunction() {
+                    @Override
+                    public void onCallBack(String data) {
+                        Log.d(TAG,"setStartCallback callback:"+data);
+                    }
+                });
+            }
 
         }
     }
