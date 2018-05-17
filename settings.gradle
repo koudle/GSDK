@@ -1,1 +1,1 @@
-include ':app', ':gsdk'
+include ':app', ':ghsdk'

@@ -31,7 +31,7 @@
             android:text="切换相机" />
     </LinearLayout>
 
-    <com.gizmo.gsdksmaple.camera.ScanView
+    <com.gizmohub.gsdksmaple.camera.ScanView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

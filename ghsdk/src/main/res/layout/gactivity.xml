@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <com.gizmohub.sdk.view.GHView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gview">
+
+    </com.gizmohub.sdk.view.GHView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="white"
+            android:id="@+id/white"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="blue"
+            android:id="@+id/blue"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="black"
+            android:id="@+id/black"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="gray"
+            android:id="@+id/gray"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="door"
+            android:id="@+id/door"
+            />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="light"
+            android:id="@+id/light"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="3dButton"
+            android:id="@+id/dButton"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="out view"
+            android:id="@+id/outview"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="in view"
+            android:id="@+id/inview"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
