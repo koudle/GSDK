@@ -27,7 +27,11 @@
 -keep class com.alibaba.sdk.android.oss.** { *; }
 -dontwarn okio.**
 -dontwarn org.apache.commons.codec.binary.**
-
+-keep class com.gizmohub.sdk.GHSDK {*;}
+-keep class com.gizmohub.sdk.parameter.** {*;}
+-keep class com.gizmohub.sdk.view.** {*;}
+-keep class com.gizmohub.sdk.utils.** {*;}
+-keep class com.gizmohub.sdk.logo.** {*;}
 
 #-optimizationpasses 7
 #-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
