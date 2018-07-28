@@ -6,7 +6,7 @@ package com.gizmohub.sdk.parameter;
 
 public abstract class BaseParameter {
     public static final String CONTENT_ID = "content_id";
-    public static final String EMAIL = "email";
+    public static final String ACCESSKEY = "accesskey";
     public static final String TIMESTAMP = "timestamp";
 
     protected static final String SIGNATURE = "signature";

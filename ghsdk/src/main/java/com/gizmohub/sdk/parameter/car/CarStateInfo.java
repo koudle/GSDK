@@ -1,11 +1,14 @@
 package com.gizmohub.sdk.parameter.car;
 
 public class CarStateInfo {
-    public CarStateModel CarExterior;
-    public CarStateModel CarInterior;
-    public CarStateModel CarWheel;
-    public CarStateModel CarView;
+    public CarStateModel exterior;
+    public CarStateModel interior;
+    public CarStateModel wheel;
+    public CarStateModel skyBox;
     public Boolean[] CarDoors;
-    public Boolean CarLight;
-    public Boolean Car3DButtons;
+    public Boolean headLight;
+    public Boolean annotations;
+    public Boolean visible;
+    public Boolean size;
+    public Boolean moving;
 }

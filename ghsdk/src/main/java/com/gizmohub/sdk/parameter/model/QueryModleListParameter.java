@@ -28,15 +28,15 @@ public class QueryModleListParameter extends BaseParameter {
 
     @Override
     public String toURL() throws NullPointerException {
-        Predication.checkNotNullString(EMAIL, GHSDK.sEmail);
+        Predication.checkNotNullString(ACCESSKEY, GHSDK.sAccessKey);
         Predication.checkNotNullString(TIMESTAMP,timestamp);
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(QUERY_URL)
-                .append(EMAIL).append("=").append(GHSDK.sEmail)
+                .append(ACCESSKEY).append("=").append(GHSDK.sAccessKey)
                 .append("&").append(TIMESTAMP).append("=").append(timestamp)
                 .append("&").append(LIMIT).append("=").append(limit)
                 .append("&").append(OFFSET).append("=").append(offset)
-                .append("&").append(SIGNATURE).append("=").append(SignatureUtil.signature(GHSDK.sEmail, GHSDK.sToken,timestamp));
+                .append("&").append(SIGNATURE).append("=").append(SignatureUtil.signature(GHSDK.sAccessKey, GHSDK.sToken,timestamp));
         return stringBuffer.toString();
     }
 }

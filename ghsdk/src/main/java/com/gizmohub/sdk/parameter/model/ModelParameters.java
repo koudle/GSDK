@@ -30,13 +30,13 @@ public class ModelParameters extends BaseParameter {
     @Override
     public String toURL() throws NullPointerException{
         Predication.checkNotNullString(CONTENT_ID,content_id);
-        Predication.checkNotNullString(EMAIL, GHSDK.sEmail);
+        Predication.checkNotNullString(ACCESSKEY, GHSDK.sAccessKey);
         Predication.checkNotNullString(TIMESTAMP,timestamp);
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(String.format(DISPLAY_URL,content_id))
-                .append("&").append(EMAIL).append("=").append(GHSDK.sEmail)
+                .append("&").append(ACCESSKEY).append("=").append(GHSDK.sAccessKey)
                 .append("&").append(TIMESTAMP).append("=").append(timestamp)
-                .append("&").append(SIGNATURE).append("=").append(SignatureUtil.signature(GHSDK.sEmail, GHSDK.sToken,timestamp))
+                .append("&").append(SIGNATURE).append("=").append(SignatureUtil.signature(GHSDK.sAccessKey, GHSDK.sToken,timestamp))
                 .append("&").append(AUTOSTART).append("=").append(this.autostart)
                 .append("&").append(AUTOLOAD).append("=").append(this.autoload);
         return stringBuffer.toString();

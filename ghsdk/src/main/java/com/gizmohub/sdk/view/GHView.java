@@ -18,6 +18,7 @@ import com.gizmohub.sdk.BuildConfig;
 import com.gizmohub.sdk.R;
 import com.gizmohub.sdk.cacheWebView.CacheWebView;
 import com.gizmohub.sdk.cacheWebView.WebViewCache;
+import com.gizmohub.sdk.cacheWebView.jsbridge.BridgeHandler;
 import com.gizmohub.sdk.cacheWebView.jsbridge.CallBackFunction;
 import com.gizmohub.sdk.config.AppConfig;
 import com.gizmohub.sdk.parameter.car.CarParameter;
@@ -130,15 +131,15 @@ public class GHView extends LinearLayout {
 
 
 
-    public void loadModel(final CarParameter carParameter, GHCallback GHCallback) {
+    public void loadOnLineModel(final CarParameter carParameter) {
         if(carParameter == null) return;
         this.carParameter = carParameter;
-        if(carParameter.forceUpdate) {
-
-        }
 
         load3D(carParameter.toURL());
 
+    }
+
+    public void offlineLoadModel(){
 
     }
 
@@ -147,6 +148,17 @@ public class GHView extends LinearLayout {
             @Override
             public void onCallBack(String data) {
                 Log.d(TAG,"start callback:"+data);
+            }
+        });
+    }
+
+    public void addEventListener(String eventName, final GHCallback ghCallback){
+        webView.callHandler("on", eventName, new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+                if(ghCallback != null) {
+                    ghCallback.callback(data);
+                }
             }
         });
     }
@@ -161,31 +173,31 @@ public class GHView extends LinearLayout {
     }
 
 
-    public void modifyCarExterior(CarStateModel carStateModel){
-        if(carStateModel == null) return;
+    public void modifyExterior(CarStateModel exterior){
+        if(exterior == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.CarExterior = carStateModel;
+        carStateInfo.exterior = exterior;
         modifyCarStates(carStateInfo);
     }
 
     public void modifyCarInterior(CarStateModel carStateModel){
         if(carStateModel == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.CarInterior = carStateModel;
+        carStateInfo.interior = carStateModel;
         modifyCarStates(carStateInfo);
     }
 
-    public void modifyCarWheel(CarStateModel carStateModel){
-        if(carStateModel == null) return;
+    public void modifyWheel(CarStateModel wheel){
+        if(wheel == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.CarWheel = carStateModel;
+        carStateInfo.wheel = wheel;
         modifyCarStates(carStateInfo);
     }
 
-    public void modifyCarView(CarStateModel carStateModel){
-        if(carStateModel == null) return;
+    public void modifySkyBox(CarStateModel skyBox){
+        if(skyBox == null) return;
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.CarView = carStateModel;
+        carStateInfo.skyBox = skyBox;
         modifyCarStates(carStateInfo);
     }
 
@@ -195,16 +207,16 @@ public class GHView extends LinearLayout {
         modifyCarStates(carStateInfo);
     }
 
-    public void modifyCarLight(boolean carLight) {
+    public void modifyCarLight(boolean headLight) {
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.CarLight = carLight;
+        carStateInfo.headLight = headLight;
         modifyCarStates(carStateInfo);
     }
 
 
-    public void modifyCar3DButtons(boolean car3DButtons){
+    public void modifyAnnotations(boolean annotations){
         CarStateInfo carStateInfo = new CarStateInfo();
-        carStateInfo.Car3DButtons = car3DButtons;
+        carStateInfo.annotations = annotations;
         modifyCarStates(carStateInfo);
     }
 
@@ -215,6 +227,7 @@ public class GHView extends LinearLayout {
                 Log.d(TAG,"modifyCarStates callback:"+data);
             }
         });
+
     }
 
 

@@ -11,12 +11,12 @@ import com.tencent.smtt.sdk.QbSdk;
  */
 
 public class GHSDK {
-    public static String sEmail = "";
+    public static String sAccessKey = "";
     public static String sToken = "";
 
-    public static final void init(Context context,String email, String token){
-        if(!TextUtils.isEmpty(sEmail) && !TextUtils.isEmpty(sToken)) return;
-        sEmail = email;
+    public static final void init(Context context,String accessKey, String token){
+        if(!TextUtils.isEmpty(sAccessKey) && !TextUtils.isEmpty(sToken)) return;
+        sAccessKey = accessKey;
         sToken = token;
         QbSdk.initX5Environment(context, new QbSdk.PreInitCallback() {
             @Override

@@ -49,14 +49,13 @@ public class GActivity extends AppCompatActivity implements View.OnClickListener
         if(intent == null || GHView == null) return;
         //BaseParameter baseParameter = intent.get(PARAMETER);
         CarStateInfo stateInfo = new CarStateInfo();
-        stateInfo.CarLight = carLight;
-        stateInfo.CarExterior = CarStateModel.build().setName("F00002-6");
-        //stateInfo.CarView = CarStateModel.build().setName("look");
+        stateInfo.headLight = carLight;
+        stateInfo.exterior = CarStateModel.build().setName("F00002-6");
         stateInfo.CarDoors = new Boolean[]{false,false};
-        stateInfo.CarWheel = CarStateModel.build().setName("F00003-5");
-        stateInfo.Car3DButtons =car3DButton;
-        CarParameter carParameter = new CarParameter("",stateInfo,false);
-        GHView.loadModel(carParameter, null);
+        stateInfo.wheel = CarStateModel.build().setName("F00003-5");
+        stateInfo.annotations =car3DButton;
+        CarParameter carParameter = new CarParameter("",stateInfo);
+        GHView.loadOnLineModel(carParameter);
     }
 
     @Override
@@ -72,13 +71,13 @@ public class GActivity extends AppCompatActivity implements View.OnClickListener
     public void onClick(View view) {
         int id = view.getId();
         if(id == R.id.white){
-            GHView.modifyCarExterior(CarStateModel.build().setName("F00002-7"));
+            GHView.modifyExterior(CarStateModel.build().setName("F00002-7"));
         }else if(id == R.id.blue){
-            GHView.modifyCarExterior(CarStateModel.build().setName("F00002-8"));
+            GHView.modifyExterior(CarStateModel.build().setName("F00002-8"));
         }else if(id == R.id.black){
-            GHView.modifyCarExterior(CarStateModel.build().setName("F00002-6"));
+            GHView.modifyExterior(CarStateModel.build().setName("F00002-6"));
         }else if(id == R.id.gray){
-            GHView.modifyCarExterior(CarStateModel.build().setName("F00002-9"));
+            GHView.modifyExterior(CarStateModel.build().setName("F00002-9"));
         }else if(id == R.id.door){
             carDoor = !carDoor;
             if(carDoor){
@@ -91,11 +90,11 @@ public class GActivity extends AppCompatActivity implements View.OnClickListener
             GHView.modifyCarLight(carLight);
         }else if(id == R.id.dButton){
             car3DButton = !car3DButton;
-            GHView.modifyCar3DButtons(car3DButton);
+            GHView.modifyAnnotations(car3DButton);
         }else if(id == R.id.outview){
-            GHView.modifyCarView(CarStateModel.build().setName("orbit"));
+            GHView.modifySkyBox(CarStateModel.build().setName("orbit"));
         }else if(id == R.id.inview){
-            GHView.modifyCarView(CarStateModel.build().setName("look"));
+            GHView.modifySkyBox(CarStateModel.build().setName("look"));
         }
     }
 }
