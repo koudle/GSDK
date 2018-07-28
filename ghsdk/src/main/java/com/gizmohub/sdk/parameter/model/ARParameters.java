@@ -7,8 +7,8 @@ public class ARParameters extends ModelParameters {
     }
 
     @Override
-    public String toURL() throws NullPointerException {
-        String url = super.toURL();
+    public String toOnLineURL() throws NullPointerException {
+        String url = super.toOnLineURL();
         url += "&ar=1";
         return url;
     }

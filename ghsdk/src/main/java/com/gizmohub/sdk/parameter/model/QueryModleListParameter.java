@@ -27,7 +27,7 @@ public class QueryModleListParameter extends BaseParameter {
     }
 
     @Override
-    public String toURL() throws NullPointerException {
+    public String toOnLineURL() throws NullPointerException {
         Predication.checkNotNullString(ACCESSKEY, GHSDK.sAccessKey);
         Predication.checkNotNullString(TIMESTAMP,timestamp);
         StringBuffer stringBuffer = new StringBuffer();

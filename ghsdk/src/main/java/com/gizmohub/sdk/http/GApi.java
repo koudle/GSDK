@@ -21,7 +21,7 @@ public class GApi {
 
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request =   new Request.Builder()
-                .url(parameter.toURL())
+                .url(parameter.toOnLineURL())
                 .build();
         try {
             Response response = okHttpClient.newCall(request).execute();
@@ -42,7 +42,7 @@ public class GApi {
 
         OkHttpClient okHttpClient = new OkHttpClient();
         final Request request =   new Request.Builder()
-                .url(parameter.toURL())
+                .url(parameter.toOnLineURL())
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override

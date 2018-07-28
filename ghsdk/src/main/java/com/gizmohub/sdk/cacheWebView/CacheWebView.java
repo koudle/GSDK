@@ -318,6 +318,11 @@ public class CacheWebView extends WebView {
         }
     }
 
+    public void setOfflineStrategy(){
+        WebSettings webSettings = this.getSettings();
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+    }
+
     public static CacheWebView cacheWebView(Context context){
         return new CacheWebView(context);
     }

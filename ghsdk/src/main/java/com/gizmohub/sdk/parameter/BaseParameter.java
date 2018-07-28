@@ -12,7 +12,6 @@ public abstract class BaseParameter {
     protected static final String SIGNATURE = "signature";
 
 
-    public abstract String toURL() throws NullPointerException;
-
+    public abstract String toOnLineURL() throws NullPointerException;
 
 }

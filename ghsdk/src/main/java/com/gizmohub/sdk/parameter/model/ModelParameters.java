@@ -28,7 +28,7 @@ public class ModelParameters extends BaseParameter {
     }
 
     @Override
-    public String toURL() throws NullPointerException{
+    public String toOnLineURL() throws NullPointerException{
         Predication.checkNotNullString(CONTENT_ID,content_id);
         Predication.checkNotNullString(ACCESSKEY, GHSDK.sAccessKey);
         Predication.checkNotNullString(TIMESTAMP,timestamp);

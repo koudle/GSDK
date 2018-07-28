@@ -5,10 +5,10 @@ import com.gizmohub.sdk.parameter.BaseParameter;
 import com.gizmohub.sdk.utils.SignatureUtil;
 
 public class CarParameter extends BaseParameter {
-    //public static String BASE_URL = "https://gizmohub.com/models/";
-    public static String BASE_URL = "http://192.168.1.181:9999/";
+    public static String BASE_URL = "https://gizmohub.com/models/";
+//    public static String BASE_URL = "http://192.168.1.181:9999/";
 
-    private String uid;
+    public String uid;
     public CarStateInfo carStateInfo;
 //    public boolean forceUpdate;
     private String timestamp;
@@ -22,7 +22,7 @@ public class CarParameter extends BaseParameter {
     }
 
     @Override
-    public String toURL() throws NullPointerException {
+    public String toOnLineURL() throws NullPointerException {
         String url;
         if(carStateInfo == null){
             url = BASE_URL + uid +"/embed?";
@@ -36,6 +36,6 @@ public class CarParameter extends BaseParameter {
                 .append("&").append(TIMESTAMP).append("=").append(timestamp)
                 .append("&").append(SIGNATURE).append("=").append(SignatureUtil.signature(GHSDK.sAccessKey, GHSDK.sToken,timestamp));
 
-        return url;
+        return stringBuffer.toString();
     }
 }

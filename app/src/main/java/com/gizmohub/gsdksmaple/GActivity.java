@@ -54,8 +54,8 @@ public class GActivity extends AppCompatActivity implements View.OnClickListener
         stateInfo.CarDoors = new Boolean[]{false,false};
         stateInfo.wheel = CarStateModel.build().setName("F00003-5");
         stateInfo.annotations =car3DButton;
-        CarParameter carParameter = new CarParameter("",stateInfo);
-        GHView.loadOnLineModel(carParameter);
+        CarParameter carParameter = new CarParameter("e3660160d6963d5269cdabaf8c940526c4a3e940",stateInfo);
+        GHView.offlineLoadModel(carParameter);
     }
 
     @Override

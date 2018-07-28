@@ -2,6 +2,7 @@ package com.gizmohub.sdk.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -18,13 +19,13 @@ import com.gizmohub.sdk.BuildConfig;
 import com.gizmohub.sdk.R;
 import com.gizmohub.sdk.cacheWebView.CacheWebView;
 import com.gizmohub.sdk.cacheWebView.WebViewCache;
-import com.gizmohub.sdk.cacheWebView.jsbridge.BridgeHandler;
 import com.gizmohub.sdk.cacheWebView.jsbridge.CallBackFunction;
 import com.gizmohub.sdk.config.AppConfig;
 import com.gizmohub.sdk.parameter.car.CarParameter;
 import com.gizmohub.sdk.parameter.car.CarStateInfo;
 import com.gizmohub.sdk.parameter.BaseParameter;
 import com.gizmohub.sdk.parameter.car.CarStateModel;
+import com.gizmohub.sdk.utils.SharedPreferencesUtils;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -124,23 +125,34 @@ public class GHView extends LinearLayout {
 
     public void load3D(BaseParameter parameters){
         if(parameters == null || webView == null) return;
-        String url = parameters.toURL();
+        String url = parameters.toOnLineURL();
         webView.loadUrl(url);
-
     }
 
 
 
-    public void loadOnLineModel(final CarParameter carParameter) {
+    public void loadOnLineModel(CarParameter carParameter) {
+        if(carParameter == null) return;
+        this.carParameter = carParameter;
+        webView.setCacheStrategy(WebViewCache.CacheStrategy.FORCE);
+        String url = carParameter.toOnLineURL();
+        load3D(url);
+        SharedPreferencesUtils.init(getContext(),TAG).putString(carParameter.uid,url);
+    }
+
+    public void offlineLoadModel(CarParameter carParameter){
         if(carParameter == null) return;
         this.carParameter = carParameter;
 
-        load3D(carParameter.toURL());
-
-    }
-
-    public void offlineLoadModel(){
-
+        String offlineUrl = SharedPreferencesUtils.init(getContext(),TAG).getString(carParameter.uid);
+        if(!TextUtils.isEmpty(offlineUrl)){
+            // 本地有缓存
+            webView.setOfflineStrategy();
+            load3D(offlineUrl);
+        }else {
+            // 本地没有缓存
+            loadOnLineModel(carParameter);
+        }
     }
 
     private void start(){
