@@ -175,11 +175,14 @@ public class GHView extends LinearLayout {
         });
     }
 
-    public void getOptions(){
+    public void getOptions(final GHCallback ghCallback){
         webView.callHandler("getOptions", null, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 Log.d(TAG,"getOptions callback:"+data);
+                if(ghCallback != null) {
+                    ghCallback.callback(data);
+                }
             }
         });
     }
