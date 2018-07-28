@@ -5,7 +5,7 @@ import com.gizmohub.sdk.parameter.BaseParameter;
 import com.gizmohub.sdk.utils.SignatureUtil;
 
 public class CarParameter extends BaseParameter {
-    public static String BASE_URL = "https://gizmohub.com/models/";
+    public static String BASE_URL = "https://gizmohub.com/viewer/ycyh/i/";
 //    public static String BASE_URL = "http://192.168.1.181:9999/";
 
     public String uid;
@@ -25,9 +25,9 @@ public class CarParameter extends BaseParameter {
     public String toOnLineURL() throws NullPointerException {
         String url;
         if(carStateInfo == null){
-            url = BASE_URL + uid +"/embed?";
+            url = BASE_URL + uid +"?";
         }else {
-            url = BASE_URL + uid +"/embed?postInitialize=1&";
+            url = BASE_URL + uid +"?postInitialize=1&";
         }
 
         StringBuffer stringBuffer = new StringBuffer();

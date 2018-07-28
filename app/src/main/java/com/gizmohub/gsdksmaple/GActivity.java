@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.gizmohub.sdk.R;
 import com.gizmohub.sdk.parameter.car.CarParameter;
 import com.gizmohub.sdk.parameter.car.CarStateInfo;
 import com.gizmohub.sdk.parameter.car.CarStateModel;
+import com.gizmohub.sdk.view.GHCallback;
 import com.gizmohub.sdk.view.GHView;
 
 /**
@@ -54,8 +56,14 @@ public class GActivity extends AppCompatActivity implements View.OnClickListener
         stateInfo.CarDoors = new Boolean[]{false,false};
         stateInfo.wheel = CarStateModel.build().setName("F00003-5");
         stateInfo.annotations =car3DButton;
-        CarParameter carParameter = new CarParameter("e3660160d6963d5269cdabaf8c940526c4a3e940",stateInfo);
-        GHView.offlineLoadModel(carParameter);
+        CarParameter carParameter = new CarParameter("e0408eb7c275385aadee0af29f407af2f40be717",stateInfo);
+        GHView.addEventListener("gizmohub:preload:progress", new GHCallback() {
+            @Override
+            public void callback(String value) {
+                Toast.makeText(GActivity.this,value,Toast.LENGTH_SHORT).show();
+            }
+        });
+        GHView.loadOnLineModel(carParameter);
     }
 
     @Override

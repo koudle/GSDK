@@ -22,7 +22,7 @@ public class SampleActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample);
-        GHSDK.init(getApplicationContext(),"tanqingquan@gizmotech.cn","645e900d776bb935b30ce366768d3bd6676a00c9");
+        GHSDK.init(getApplicationContext(),"KTxCe4KGCc","tgxhxjwyhehzbtnfgtatt9jfydlvhcpjnxuymcbd");
 
         findViewById(R.id.display_btn).setOnClickListener(new View.OnClickListener() {
             @Override
